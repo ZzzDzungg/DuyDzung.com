@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nguyễn Duy Dũng — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f; --bg2: #111118; --bg3: #18181f;
+    --accent: #c8f564; --accent2: #7ee8fa;
+    --text: #f0ede8; --muted: #888894; --border: rgba(255,255,255,0.08);
+    --font-display: 'Playfair Display', serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 3rem; background: rgba(10,10,15,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .nav-logo { font-family: var(--font-mono); font-size: 13px; color: var(--accent); letter-spacing: 0.1em; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--accent); }
+  section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; }
+  #hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; padding-top: 8rem; max-width: 1100px; margin: 0 auto; padding-left: 3rem; padding-right: 3rem; }
+  .hero-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+  .hero-label::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero-name { font-family: var(--font-display); font-size: clamp(3rem, 5vw, 5.5rem); font-weight: 700; line-height: 1.05; margin-bottom: 0.5rem; }
+  .hero-name em { font-style: italic; color: var(--accent); }
+  .hero-tagline { font-family: var(--font-display); font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 400; font-style: italic; color: var(--muted); margin-bottom: 2rem; }
+  .hero-bio { font-size: 15px; color: var(--muted); max-width: 480px; margin-bottom: 2.5rem; line-height: 1.8; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; padding: 0.85rem 2rem; background: var(--accent); color: #0a0a0f; border: none; cursor: pointer; text-decoration: none; display: inline-block; font-weight: 400; transition: opacity 0.2s; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-secondary { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em; padding: 0.85rem 2rem; background: transparent; color: var(--text); border: 1px solid var(--border); cursor: pointer; text-decoration: none; display: inline-block; transition: border-color 0.2s; }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-visual { display: flex; flex-direction: column; gap: 1rem; }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-card { background: var(--bg3); border: 1px solid var(--border); padding: 1.5rem; position: relative; overflow: hidden; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); }
+  .stat-num { font-family: var(--font-display); font-size: 2.5rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+  .stat-card.wide { grid-column: span 2; display: flex; align-items: center; gap: 2rem; }
+  .stat-card.wide .stat-num { font-size: 1.5rem; }
+  .location-pill { font-family: var(--font-mono); font-size: 11px; color: var(--accent2); letter-spacing: 0.1em; flex: 1; }
+  .section-divider { width: 100%; height: 1px; background: var(--border); max-width: 1100px; margin: 0 auto; }
+  .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3rem; }
+  .section-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 0.75rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.1; }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-count { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+  .academics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .achievement-card { background: var(--bg3); border: 1px solid var(--border); padding: 2rem; position: relative; transition: border-color 0.3s; }
+  .achievement-card:hover { border-color: rgba(200,245,100,0.3); }
+  .achievement-card .badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; color: #0a0a0f; background: var(--accent); padding: 0.25rem 0.75rem; display: inline-block; margin-bottom: 1rem; }
+  .achievement-card .badge.blue { background: var(--accent2); }
+  .achievement-title { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.3; }
+  .achievement-meta { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 0.75rem; }
+  .achievement-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+  .card-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--accent); text-decoration: none; display: inline-block; margin-top: 0.75rem; }
+  .card-link:hover { text-decoration: underline; }
+  .achievement-card.featured { grid-column: span 2; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+  .gpa-display { font-family: var(--font-display); font-size: 5rem; font-weight: 700; color: var(--accent); line-height: 1; }
+  .gpa-sub { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; margin-top: 0.5rem; }
+  .activities-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .activity-row { background: var(--bg); display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 2rem; padding: 1.5rem 2rem; transition: background 0.2s; }
+  .activity-row:hover { background: var(--bg3); }
+  .activity-row { cursor: pointer; }
+  a.activity-row { text-decoration: none; color: inherit; display: grid; }
+  a.activity-row .activity-num { color: var(--border); }
+  a.activity-row:hover .activity-num { color: var(--accent); }
+  a.activity-row:hover .activity-name { color: var(--accent); }
+  .activity-arrow { font-family: var(--font-mono); font-size: 14px; color: var(--muted); transition: transform 0.2s, color 0.2s; }
+  a.activity-row:hover .activity-arrow { transform: translateX(5px); color: var(--accent); }
+  .activity-num { font-family: var(--font-mono); font-size: 2rem; font-weight: 300; color: var(--border); text-align: right; }
+  .activity-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 400; margin-bottom: 0.25rem; }
+  .activity-role { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .activity-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--accent); border: 1px solid rgba(200,245,100,0.3); padding: 0.3rem 0.75rem; white-space: nowrap; }
+  .activity-tag.blue { color: var(--accent2); border-color: rgba(126,232,250,0.3); }
+  .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .project-card { background: var(--bg3); border: 1px solid var(--border); padding: 1.75rem; display: flex; flex-direction: column; gap: 1rem; transition: border-color 0.3s; }
+  .project-card:hover { border-color: rgba(200,245,100,0.3); }
+  .project-icon { width: 40px; height: 40px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 16px; color: var(--accent); }
+  .project-name { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; line-height: 1.3; }
+  .project-desc { font-size: 13px; color: var(--muted); line-height: 1.7; flex: 1; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tech-tag { font-family: var(--font-mono); font-size: 10px; color: var(--muted); background: var(--bg2); border: 1px solid var(--border); padding: 0.2rem 0.6rem; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .contact-big { font-family: var(--font-display); font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 700; line-height: 1.05; margin-bottom: 1.5rem; }
+  .contact-big em { color: var(--accent); font-style: italic; }
+  .contact-sub { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link { display: flex; align-items: center; gap: 1.5rem; padding: 1.25rem 1.5rem; background: var(--bg3); border: 1px solid var(--border); text-decoration: none; color: var(--text); transition: border-color 0.2s; }
+  .contact-link:hover { border-color: rgba(200,245,100,0.4); }
+  .contact-link-icon { font-family: var(--font-mono); font-size: 16px; color: var(--accent); width: 24px; }
+  .contact-link-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.15em; margin-bottom: 0.2rem; }
+  .contact-link-val { font-size: 14px; }
+  .contact-link-arrow { font-family: var(--font-mono); font-size: 14px; color: var(--muted); }
+  footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; max-width: 1100px; margin: 0 auto; }
+  .footer-note { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+  .footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .grid-bg { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; opacity: 0.5; }
+  main { position: relative; z-index: 1; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .fade-up { animation: fadeUp 0.8s ease forwards; }
+  .delay-1 { animation-delay: 0.15s; opacity: 0; }
+  .delay-2 { animation-delay: 0.3s; opacity: 0; }
+  .delay-3 { animation-delay: 0.45s; opacity: 0; }
+  .delay-4 { animation-delay: 0.6s; opacity: 0; }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav>
+  <!-- ① NAV LOGO: Chữ viết tắt tên -->
+  <span class="nav-logo">NDD_</span>
+  <div class="nav-links">
+    <a href="#about">about</a>
+    <a href="#academics">academics</a>
+    <a href="#activities">activities</a>
+    <a href="#projects">projects</a>
+    <a href="#contact">contact</a>
+  </div>
+</nav>
+<main>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: HERO / ABOUT
+     ═══════════════════════════════════════════ -->
+<div id="about">
+  <section id="hero">
+    <div>
+      <!-- ② CLASS YEAR -->
+      <p class="hero-label fade-up">Class of 2027</p>
+
+      <!-- ③ TÊN -->
+      <h1 class="hero-name fade-up delay-1">Nguyễn<br><em>Duy Dũng</em></h1>
+
+      <!-- ④ TAGLINE -->
+      <p class="hero-tagline fade-up delay-2">Aspiring AI Researcher & Software Developer</p>
+
+      <!-- ⑤ BIO -->
+      <p class="hero-bio fade-up delay-3">
+        Informatics student at Hanoi-Amsterdam High School for the Gifted with a
+        strong interest in artificial intelligence, data-driven problem solving,
+        and software development — including a semifinalist project in the
+        Amazon Nova AI Hackathon among 13,000+ participants.
+      </p>
+
+      <div class="hero-cta fade-up delay-4">
+        <a href="#academics" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-secondary">Get In Touch</a>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-up delay-2">
+      <div class="stat-grid">
+        <!-- ⑥ STAT CARDS -->
+        <div class="stat-card">
+          <div class="stat-num">9.6</div>   <!-- GPA -->
+          <div class="stat-label">GPA / 10</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">1590</div>   <!-- Điểm SAT -->
+          <div class="stat-label">SAT Score / 1600</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">2</div>     <!-- Số hackathon -->
+          <div class="stat-label">International AI Hackathons</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">$65K+</div>      <!-- Gây quỹ từ thiện -->
+          <div class="stat-label">Raised for Charity</div>
+        </div>
+        <div class="stat-card wide">
+          <div>
+            <!-- ⑦ LOCATION -->
+            <div class="stat-num">Hanoi</div>
+            <div class="stat-label">Vietnam</div>
+          </div>
+          <div class="location-pill">● Seeking opportunities worldwide</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: ACADEMICS
+     ═══════════════════════════════════════════ -->
+<section id="academics">
+  <div class="section-header">
+    <div>
+      <p class="section-label">01 — Academics</p>
+      <h2 class="section-title">Academic <em>Excellence</em></h2>
+    </div>
+    <!-- ⑧ TÊN TRƯỜNG -->
+    <span class="section-count">Hanoi-Amsterdam High School for the Gifted</span>
+  </div>
+
+  <div class="academics-grid">
+
+    <!-- CARD ĐẶC BIỆT: THÔNG TIN TRƯỜNG -->
+    <div class="achievement-card featured">
+      <div>
+        <span class="badge">ACADEMIC RECORD</span>
+        <!-- ⑨ TÊN TRƯỜNG + BAN -->
+        <h3 class="achievement-title" style="font-size:1.5rem;">Hanoi-Amsterdam High School for the Gifted</h3>
+        <p class="achievement-meta">Specialized Program in Informatics (Computer Science) · 2024 – 2027</p>
+        <!-- ⑩ MÔ TẢ TRƯỜNG -->
+        <p class="achievement-desc">One of Vietnam's most prestigious public high schools. Focused deeply on advanced algorithms, data structures, programming, and competitive mathematical problem solving.</p>
+      </div>
+      <div style="text-align:center;">
+        <!-- ⑪ GPA -->
+        <div class="gpa-display">9.6</div>
+        <div class="gpa-sub">CURRENT GPA / 10</div>
+      </div>
+    </div>
+
+    <!-- CARD GIẢI THƯỞNG 1 -->
+    <div class="achievement-card">
+      <span class="badge blue">STANDARDIZED</span>
+      <h3 class="achievement-title">SAT Score: 1590/1600</h3>
+      <p class="achievement-meta">College Board</p>
+      <p class="achievement-desc">Demonstrated exceptional quantitative reasoning, analytical thinking, and global academic preparedness.</p>
+      <a class="card-link" href="../Ảnh về các hoạt động của Dũng/Điểm SAT/digital_sat_k12_student_weekend_151457635_9ce0a110-7c68-4b99-a91b-94ea921b509a.pdf" target="_blank">View score report →</a>
+    </div>
+
+    <!-- CARD AP -->
+    <div class="achievement-card">
+      <span class="badge blue">ADVANCED PLACEMENT</span>
+      <h3 class="achievement-title">AP Exams: Two Perfect 5s</h3>
+      <p class="achievement-meta">College Board · 2026</p>
+      <p class="achievement-desc">AP Computer Science A: 5/5 · AP Calculus BC: 5/5 — demonstrating college-level mastery in computer science and mathematics.</p>
+      <a class="card-link" href="../Ảnh về các hoạt động của Dũng/AP Score/Score Report.pdf" target="_blank">View score report →</a>
+    </div>
+
+    <!-- CARD COURSERA -->
+    <div class="achievement-card">
+      <span class="badge blue">CERTIFICATION</span>
+      <h3 class="achievement-title">Supervised Machine Learning: Regression and Classification</h3>
+      <p class="achievement-meta">DeepLearning.AI & Stanford University · Coursera · 2026</p>
+      <p class="achievement-desc">Completed the foundational machine learning course covering linear & logistic regression, gradient descent, and classification.</p>
+      <a class="card-link" href="https://www.coursera.org/verify/QVC6YPL9MRX9" target="_blank">Verify certificate →</a>
+    </div>
+
+    <!-- CARD GIẢI THƯỞNG 2 -->
+    <div class="achievement-card">
+      <span class="badge">HACKATHON</span>
+      <h3 class="achievement-title">Amazon Nova AI Hackathon — Semifinalist</h3>
+      <p class="achievement-meta">AI Hire AI · Data Research Team Member</p>
+      <p class="achievement-desc">Winner of the Amazon Nova Feedback Award — among the top teams out of 13,000+ participants in an international AI hackathon.</p>
+    </div>
+
+    <!-- CARD GIẢI THƯỞNG 3 -->
+    <div class="achievement-card">
+      <span class="badge">HACKATHON</span>
+      <h3 class="achievement-title">AI4Alzheimer's Hackathon — Memory Hugs</h3>
+      <p class="achievement-meta">Data Researcher · Data Research Team Member</p>
+      <p class="achievement-desc">Researched Alzheimer's disease progression and technology-assisted diagnostics to guide an AI-driven healthcare product's design.</p>
+    </div>
+
+    <!-- CARD GIẢI THƯỞNG 4 -->
+    <div class="achievement-card">
+      <span class="badge blue">SKILLS</span>
+      <h3 class="achievement-title">Technical Skills</h3>
+      <p class="achievement-meta">Programming & AI</p>
+      <p class="achievement-desc">C++ (binary search, recursion, fundamental algorithms) · Java (basic OOP, AP Computer Science A preparation) · Interests: AI, machine learning applications, software development, multi-agent systems, algorithm design.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: ACTIVITIES
+     ═══════════════════════════════════════════ -->
+<section id="activities">
+  <div class="section-header">
+    <div>
+      <p class="section-label">02 — Activities</p>
+      <h2 class="section-title">Beyond the <em>Classroom</em></h2>
+    </div>
+    <!-- ⑭ Cập nhật số lượng hoạt động -->
+    <span class="section-count">5 activities listed</span>
+  </div>
+
+  <div class="activities-list">
+    <!-- Mỗi hàng là 1 thẻ <a> link sang trang chi tiết tương ứng -->
+
+    <a href="activity-01.html" class="activity-row">
+      <div class="activity-num">01</div>
+      <div>
+        <div class="activity-name">The Penwings Foundation</div>
+        <div class="activity-role">President · 2024 – Present</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span class="activity-tag">LEADERSHIP</span>
+        <span class="activity-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="activity-02.html" class="activity-row">
+      <div class="activity-num">02</div>
+      <div>
+        <div class="activity-name">Ams Crew — Hanoi-Amsterdam High School for the Gifted</div>
+        <div class="activity-role">Head of Logistics · 2025 – Present</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span class="activity-tag">LEADERSHIP</span>
+        <span class="activity-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="activity-03.html" class="activity-row">
+      <div class="activity-num">03</div>
+      <div>
+        <div class="activity-name">Amazon Nova AI Hackathon — AI Hire AI</div>
+        <div class="activity-role">Data Research Team Member · Semifinalist</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span class="activity-tag blue">HACKATHON</span>
+        <span class="activity-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="activity-04.html" class="activity-row">
+      <div class="activity-num">04</div>
+      <div>
+        <div class="activity-name">AI4Alzheimer's Hackathon — Memory Hugs</div>
+        <div class="activity-role">Data Research Team Member</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span class="activity-tag blue">HACKATHON</span>
+        <span class="activity-arrow">→</span>
+      </div>
+    </a>
+
+    <a href="activity-05.html" class="activity-row">
+      <div class="activity-num">05</div>
+      <div>
+        <div class="activity-name">Supervised Machine Learning: Regression and Classification</div>
+        <div class="activity-role">DeepLearning.AI & Stanford University · Coursera · 2026</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <span class="activity-tag blue">CERTIFICATION</span>
+        <span class="activity-arrow">→</span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4: PROJECTS
+     ═══════════════════════════════════════════ -->
+<section id="projects">
+  <div class="section-header">
+    <div>
+      <p class="section-label">03 — Projects</p>
+      <h2 class="section-title">Things I've <em>Built</em></h2>
+    </div>
+    <span class="section-count">Selected work</span>
+  </div>
+
+  <div class="projects-grid">
+    <!-- PROJECT CARD — copy/paste để thêm dự án mới -->
+    <div class="project-card">
+      <div class="project-icon">AI</div>
+      <div class="project-name">AI Hire AI — Amazon Nova AI Hackathon</div>
+      <p class="project-desc">AI-powered recruitment platform that automates candidate screening, evaluator workflow management, and interview scheduling. Researched recruitment workflows, applicant tracking systems (ATS), and multi-agent AI systems to identify baseline inefficiencies in modern talent acquisition. Semifinalist & Amazon Nova Feedback Award winner among 13,000+ participants.</p>
+      <div class="project-tech">
+        <span class="tech-tag">Multi-Agent AI</span>
+        <span class="tech-tag">ATS Research</span>
+        <span class="tech-tag">Data Research</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">♥</div>
+      <div class="project-name">Memory Hugs — AI4Alzheimer's Hackathon</div>
+      <p class="project-desc">Researched Alzheimer's disease progression, cognitive health indicators, and technology-assisted diagnostics through scientific literature and public healthcare datasets. Translated medical data findings into practical recommendations guiding the core team's product design and the feasibility of AI-driven healthcare solutions.</p>
+      <div class="project-tech">
+        <span class="tech-tag">Healthcare AI</span>
+        <span class="tech-tag">Data Research</span>
+        <span class="tech-tag">Literature Review</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">∑</div>
+      <div class="project-name">Algorithmic Problem Solving</div>
+      <p class="project-desc">Ongoing study of advanced algorithms and data structures through the Specialized Informatics program — binary search, recursion, and fundamental algorithms in C++, plus object-oriented programming in Java as preparation for AP Computer Science A.</p>
+      <div class="project-tech">
+        <span class="tech-tag">C++</span>
+        <span class="tech-tag">Java</span>
+        <span class="tech-tag">Algorithms</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5: CONTACT
+     ═══════════════════════════════════════════ -->
+<section id="contact">
+  <div class="contact-grid">
+    <div>
+      <p class="section-label">04 — Contact</p>
+      <h2 class="contact-big">Let's <em>Connect</em></h2>
+      <p class="contact-sub">I'm always open to connecting with admissions officers, mentors, researchers, and fellow students. Don't hesitate to reach out.</p>
+      <!-- ⑱ Link CV: trỏ tới file Resume PDF (đổi sang link Google Drive / Dropbox nếu deploy online) -->
+      <a href="../Nguyen Duy Dung Resume.pdf" target="_blank" class="btn-primary">Download CV</a>
+    </div>
+    <div class="contact-links">
+      <!-- ⑲ EMAIL -->
+      <a href="mailto:nguyenduydzung0203@gmail.com" class="contact-link">
+        <div class="contact-link-icon">@</div>
+        <div style="flex:1;">
+          <div class="contact-link-label">EMAIL</div>
+          <div class="contact-link-val">nguyenduydzung0203@gmail.com</div>
+        </div>
+        <div class="contact-link-arrow">→</div>
+      </a>
+      <!-- ⑳ LINKEDIN -->
+      <a href="https://linkedin.com/in/dzungnguyenduy" class="contact-link">
+        <div class="contact-link-icon">in</div>
+        <div style="flex:1;">
+          <div class="contact-link-label">LINKEDIN</div>
+          <div class="contact-link-val">linkedin.com/in/dzungnguyenduy</div>
+        </div>
+        <div class="contact-link-arrow">→</div>
+      </a>
+      <!-- ㉑ GITHUB -->
+      <a href="https://github.com/ZzzDzungg" class="contact-link">
+        <div class="contact-link-icon">&lt;/&gt;</div>
+        <div style="flex:1;">
+          <div class="contact-link-label">GITHUB</div>
+          <div class="contact-link-val">github.com/ZzzDzungg</div>
+        </div>
+        <div class="contact-link-arrow">→</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ⑳ FOOTER: Thay tên và năm -->
+<footer>
+  <span class="footer-note">© 2026 Nguyễn Duy Dũng · Hanoi, Vietnam</span>
+  <div class="footer-dot"></div>
+  <span class="footer-note">Built for university applications</span>
+</footer>
+
+</main>
+</body>
+</html>
